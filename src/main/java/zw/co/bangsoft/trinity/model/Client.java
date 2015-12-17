@@ -1,13 +1,16 @@
 package zw.co.bangsoft.trinity.model;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="client")
@@ -16,15 +19,25 @@ public class Client implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	protected static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", updatable = false, nullable = false)
-	private Long id;
+	protected Long id;
 	@Version
 	@Column(name = "version")
-	private int version;
+	protected int version;
 
+	@NotNull
+	@Column(length = 30)
+	protected String type;
+
+	@Embedded
+	protected Address address;
+	
+	@Embedded
+	protected Audit audit;
+	
 	public Long getId() {
 		return this.id;
 	}
@@ -39,6 +52,22 @@ public class Client implements Serializable {
 
 	public void setVersion(final int version) {
 		this.version = version;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Audit getAudit() {
+		return audit;
+	}
+
+	public void setAudit(Audit audit) {
+		this.audit = audit;
 	}
 
 	@Override
