@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value='#{roleAccessRightBean.id}'/>
+		<f:event type="preRenderView" listener='#{roleAccessRightBean.retrieve}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Create Role Access Right"/>
+
+	<ui:define name="header">
+		Role Access Right
+	</ui:define>
+
+	<ui:define name="subheader">
+		<c:choose>
+			<c:when test='#{!empty roleAccessRightBean.id}'>
+				Edit existing Role Access Right
+			</c:when>
+			<c:otherwise>
+				Create a new Role Access Right
+			</c:otherwise>
+		</c:choose>
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="create">
+			<h:messages globalOnly="true" styleClass="error"/>
+
+			<h:panelGrid columnClasses="label,component,required" columns="3">
+				<h:outputLabel for="roleAccessRightBeanRoleAccessRightRole" value="Role:"/>
+				<h:panelGroup>
+					<h:selectOneMenu converter="#{roleBean.converter}" id="roleAccessRightBeanRoleAccessRightRole" required="true" value="#{roleAccessRightBean.roleAccessRight.role}">
+						<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{roleBean.all}" var="_item"/>
+					</h:selectOneMenu>
+					<h:message for="roleAccessRightBeanRoleAccessRightRole" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText value="*"/>
+				<h:outputLabel for="roleAccessRightBeanRoleAccessRightAccessRight" value="Access Right:"/>
+				<h:panelGroup>
+					<h:selectOneMenu converter="#{accessRightBean.converter}" id="roleAccessRightBeanRoleAccessRightAccessRight" required="true" value="#{roleAccessRightBean.roleAccessRight.accessRight}">
+						<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{accessRightBean.all}" var="_item"/>
+					</h:selectOneMenu>
+					<h:message for="roleAccessRightBeanRoleAccessRightAccessRight" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText value="*"/>
+				<h:outputLabel for="roleAccessRightBeanRoleAccessRightGranted" value="Granted:"/>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="roleAccessRightBeanRoleAccessRightGranted" value="#{roleAccessRightBean.roleAccessRight.granted}"/>
+					<h:message for="roleAccessRightBeanRoleAccessRightGranted" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel value="Audit:"/>
+				<h:panelGroup>
+					<h:commandLink action="#{roleAccessRightBean.roleAccessRight.newAudit}" rendered="#{empty roleAccessRightBean.roleAccessRight.audit}" value="Create New Audit"/>
+					<h:panelGrid columnClasses="label,component,required" columns="3" rendered="#{!empty roleAccessRightBean.roleAccessRight.audit}">
+						<h:outputLabel for="roleAccessRightBeanRoleAccessRightAuditDateCreated" value="Date Created:"/>
+						<h:panelGroup>
+							<h:inputText id="roleAccessRightBeanRoleAccessRightAuditDateCreated" value="#{roleAccessRightBean.roleAccessRight.audit.dateCreated}">
+								<f:convertDateTime/>
+							</h:inputText>
+							<h:message for="roleAccessRightBeanRoleAccessRightAuditDateCreated" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="roleAccessRightBeanRoleAccessRightAuditLastUpdated" value="Last Updated:"/>
+						<h:panelGroup>
+							<h:inputText id="roleAccessRightBeanRoleAccessRightAuditLastUpdated" value="#{roleAccessRightBean.roleAccessRight.audit.lastUpdated}">
+								<f:convertDateTime/>
+							</h:inputText>
+							<h:message for="roleAccessRightBeanRoleAccessRightAuditLastUpdated" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="roleAccessRightBeanRoleAccessRightAuditCreatedBy" value="Created By:"/>
+						<h:panelGroup>
+							<h:inputText id="roleAccessRightBeanRoleAccessRightAuditCreatedBy" value="#{roleAccessRightBean.roleAccessRight.audit.createdBy}"/>
+							<h:message for="roleAccessRightBeanRoleAccessRightAuditCreatedBy" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="roleAccessRightBeanRoleAccessRightAuditLastUpdatedBy" value="Last Updated By:"/>
+						<h:panelGroup>
+							<h:inputText id="roleAccessRightBeanRoleAccessRightAuditLastUpdatedBy" value="#{roleAccessRightBean.roleAccessRight.audit.lastUpdatedBy}"/>
+							<h:message for="roleAccessRightBeanRoleAccessRightAuditLastUpdatedBy" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+				</h:panelGroup>
+				<h:outputText/>
+			</h:panelGrid>
+
+			<div class="buttons">
+				<h:commandLink value="Save" action='#{roleAccessRightBean.update}' styleClass="btn btn-primary"/>
+				<c:choose>
+					<c:when test='#{!empty roleAccessRightBean.id}'>
+						<h:link value="Cancel" outcome="view" styleClass="btn btn-primary">
+							<f:param name="id" value='#{roleAccessRightBean.id}'/>
+						</h:link>
+						<h:commandLink value="Delete" action='#{roleAccessRightBean.delete}' styleClass="btn btn-primary"/>
+					</c:when>
+					<c:otherwise>
+						<h:link value="Cancel" outcome="search" styleClass="btn btn-primary"/>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

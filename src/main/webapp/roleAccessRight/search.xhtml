@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value='#{roleAccessRightBean.page}'/>
+		<f:event type="preRenderView" listener='#{roleAccessRightBean.paginate}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Role Access Right entities"/>
+
+	<ui:define name="header">
+		Role Access Right
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Role Access Right entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="roleAccessRightBeanExampleRole" value="Role:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{roleBean.converter}" id="roleAccessRightBeanExampleRole" value="#{roleAccessRightBean.example.role}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{roleBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="roleAccessRightBeanExampleRole" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="roleAccessRightBeanExampleAccessRight" value="Access Right:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{accessRightBean.converter}" id="roleAccessRightBeanExampleAccessRight" value="#{roleAccessRightBean.example.accessRight}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{accessRightBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="roleAccessRightBeanExampleAccessRight" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action='#{roleAccessRightBean.search}' styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action='#{roleAccessRightBean.create}' styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="roleAccessRightBeanPageItems" styleClass="data-table" value="#{roleAccessRightBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Role"/>
+					</f:facet>
+					<h:link outcome="/roleAccessRight/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemRole" value="#{forgeview:display(_item.role)}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Access Right"/>
+					</f:facet>
+					<h:link outcome="/roleAccessRight/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemAccessRight" value="#{forgeview:display(_item.accessRight)}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value='#{roleAccessRightBean}'/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>

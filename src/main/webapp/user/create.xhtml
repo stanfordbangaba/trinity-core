@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value='#{userBean.id}'/>
+		<f:event type="preRenderView" listener='#{userBean.retrieve}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Create User"/>
+
+	<ui:define name="header">
+		User
+	</ui:define>
+
+	<ui:define name="subheader">
+		<c:choose>
+			<c:when test='#{!empty userBean.id}'>
+				Edit existing User
+			</c:when>
+			<c:otherwise>
+				Create a new User
+			</c:otherwise>
+		</c:choose>
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="create">
+			<h:messages globalOnly="true" styleClass="error"/>
+
+			<h:panelGrid columnClasses="label,component,required" columns="3">
+				<h:outputLabel for="userBeanUserFirstName" value="First Name:"/>
+				<h:panelGroup>
+					<h:inputText id="userBeanUserFirstName" maxLength="50" required="true" value="#{userBean.user.firstName}"/>
+					<h:message for="userBeanUserFirstName" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText value="*"/>
+				<h:outputLabel for="userBeanUserLastName" value="Last Name:"/>
+				<h:panelGroup>
+					<h:inputText id="userBeanUserLastName" maxLength="50" required="true" value="#{userBean.user.lastName}"/>
+					<h:message for="userBeanUserLastName" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText value="*"/>
+				<h:outputLabel for="userBeanUserEmail" value="Email:"/>
+				<h:panelGroup>
+					<h:inputText id="userBeanUserEmail" maxLength="100" value="#{userBean.user.email}"/>
+					<h:message for="userBeanUserEmail" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="userBeanUserShouldChangePwd" value="Should Change Pwd:"/>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="userBeanUserShouldChangePwd" value="#{userBean.user.shouldChangePwd}"/>
+					<h:message for="userBeanUserShouldChangePwd" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="userBeanUserAccountExpired" value="Account Expired:"/>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="userBeanUserAccountExpired" value="#{userBean.user.accountExpired}"/>
+					<h:message for="userBeanUserAccountExpired" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="userBeanUserAccountLocked" value="Account Locked:"/>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="userBeanUserAccountLocked" value="#{userBean.user.accountLocked}"/>
+					<h:message for="userBeanUserAccountLocked" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="userBeanUserPasswordExpired" value="Password Expired:"/>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="userBeanUserPasswordExpired" value="#{userBean.user.passwordExpired}"/>
+					<h:message for="userBeanUserPasswordExpired" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="userBeanUserStatus" value="Status:"/>
+				<h:panelGroup>
+					<h:inputText id="userBeanUserStatus" value="#{userBean.user.status}"/>
+					<h:message for="userBeanUserStatus" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel value="Audit:"/>
+				<h:panelGroup>
+					<h:commandLink action="#{userBean.user.newAudit}" rendered="#{empty userBean.user.audit}" value="Create New Audit"/>
+					<h:panelGrid columnClasses="label,component,required" columns="3" rendered="#{!empty userBean.user.audit}">
+						<h:outputLabel for="userBeanUserAuditDateCreated" value="Date Created:"/>
+						<h:panelGroup>
+							<h:inputText id="userBeanUserAuditDateCreated" value="#{userBean.user.audit.dateCreated}">
+								<f:convertDateTime/>
+							</h:inputText>
+							<h:message for="userBeanUserAuditDateCreated" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="userBeanUserAuditLastUpdated" value="Last Updated:"/>
+						<h:panelGroup>
+							<h:inputText id="userBeanUserAuditLastUpdated" value="#{userBean.user.audit.lastUpdated}">
+								<f:convertDateTime/>
+							</h:inputText>
+							<h:message for="userBeanUserAuditLastUpdated" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="userBeanUserAuditCreatedBy" value="Created By:"/>
+						<h:panelGroup>
+							<h:inputText id="userBeanUserAuditCreatedBy" value="#{userBean.user.audit.createdBy}"/>
+							<h:message for="userBeanUserAuditCreatedBy" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="userBeanUserAuditLastUpdatedBy" value="Last Updated By:"/>
+						<h:panelGroup>
+							<h:inputText id="userBeanUserAuditLastUpdatedBy" value="#{userBean.user.audit.lastUpdatedBy}"/>
+							<h:message for="userBeanUserAuditLastUpdatedBy" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="userBeanUserUsername" value="Username:"/>
+				<h:panelGroup>
+					<h:inputText id="userBeanUserUsername" maxLength="50" required="true" value="#{userBean.user.username}"/>
+					<h:message for="userBeanUserUsername" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText value="*"/>
+				<h:outputLabel for="userBeanUserEnabled" value="Enabled:"/>
+				<h:panelGroup>
+					<h:selectBooleanCheckbox id="userBeanUserEnabled" value="#{userBean.user.enabled}"/>
+					<h:message for="userBeanUserEnabled" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="userBeanUserPassword" value="Password:"/>
+				<h:panelGroup>
+					<h:inputText id="userBeanUserPassword" maxLength="100" value="#{userBean.user.password}"/>
+					<h:message for="userBeanUserPassword" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+			</h:panelGrid>
+
+			<div class="buttons">
+				<h:commandLink value="Save" action='#{userBean.update}' styleClass="btn btn-primary"/>
+				<c:choose>
+					<c:when test='#{!empty userBean.id}'>
+						<h:link value="Cancel" outcome="view" styleClass="btn btn-primary">
+							<f:param name="id" value='#{userBean.id}'/>
+						</h:link>
+						<h:commandLink value="Delete" action='#{userBean.delete}' styleClass="btn btn-primary"/>
+					</c:when>
+					<c:otherwise>
+						<h:link value="Cancel" outcome="search" styleClass="btn btn-primary"/>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
