@@ -26,7 +26,7 @@ import zw.co.bangsoft.trinity.auth.Role;
  * 
  */
 @Stateless
-@Path("/roles")
+@Path("forge/roles")
 public class RoleEndpoint {
 	@PersistenceContext(unitName = "trinity-core-persistence-unit")
 	private EntityManager em;
@@ -57,7 +57,7 @@ public class RoleEndpoint {
 	public Response findById(@PathParam("id") Long id) {
 		TypedQuery<Role> findByIdQuery = em
 				.createQuery(
-						"SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.roleAuthorities LEFT JOIN FETCH r.roleUsers WHERE r.id = :entityId ORDER BY r.id",
+						"SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.roleAccessRights LEFT JOIN FETCH r.roleUsers WHERE r.id = :entityId ORDER BY r.id",
 						Role.class);
 		findByIdQuery.setParameter("entityId", id);
 		Role entity;
@@ -78,7 +78,7 @@ public class RoleEndpoint {
 			@QueryParam("max") Integer maxResult) {
 		TypedQuery<Role> findAllQuery = em
 				.createQuery(
-						"SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.roleAuthorities LEFT JOIN FETCH r.roleUsers ORDER BY r.id",
+						"SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.roleAccessRights LEFT JOIN FETCH r.roleUsers ORDER BY r.id",
 						Role.class);
 		if (startPosition != null) {
 			findAllQuery.setFirstResult(startPosition);

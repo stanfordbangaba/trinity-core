@@ -20,6 +20,8 @@ import zw.co.bangsoft.trinity.annotation.Email;
 import zw.co.bangsoft.trinity.model.Audit;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.shiro.crypto.hash.Sha256Hash;
+
 @Entity
 @Table(name = "user")
 @XmlRootElement
@@ -194,6 +196,9 @@ public class User implements Serializable {
 	}
 
 	public void setPassword(String password) {
+	  if (password != null) {
+	    password = new Sha256Hash(password).toHex();
+	  }
 		this.password = password;
 	}
 

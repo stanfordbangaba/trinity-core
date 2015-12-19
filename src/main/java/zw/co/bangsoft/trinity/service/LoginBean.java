@@ -1,17 +1,23 @@
 package zw.co.bangsoft.trinity.service;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Produces;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+
 import zw.co.bangsoft.trinity.annotation.LoggedIn;
+import zw.co.bangsoft.trinity.annotation.UserLoggedIn;
 import zw.co.bangsoft.trinity.auth.User;
 
 @Named
@@ -23,23 +29,24 @@ public class LoginBean implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  private Credentials credentials = new Credentials();
+  @Inject @UserLoggedIn Event<User> userLoggedIn;
+
+  @Inject private EntityService entityService;
+
+  private Subject subject;
+
   private User user;
 
   public LoginBean() {
     // TODO Auto-generated constructor stub
   }
 
-  public Credentials getCredentials() {
-    return credentials;
-  }
-
-  public void setCredentials(Credentials credentials) {
-    this.credentials = credentials;
-  }
-
   @Produces @LoggedIn
   public User getUser() {
+    if (user == null && isLoggedIn()) {
+        String username = (String) this.getSubject().getPrincipal();
+        user = entityService.getUserByUsername(username);
+    }
     return user;
   }
 
@@ -47,34 +54,27 @@ public class LoginBean implements Serializable {
     this.user = user;
   }
 
-  public String login() {
+  public Subject getSubject() {
+    return SecurityUtils.getSubject();
+  }
 
-    System.out.println("Login credentials: "
-        + credentials.getUsername() + " | " + credentials.getPassword());
+  public void setSubject(Subject subject) {
+    this.subject = subject;
+  }
 
-    if ("admin".equals(credentials.getUsername()) && "admin".equals(credentials.getPassword())) {
-      System.out.println("Authentication success!");
-
-      user = new User();
-      user.setLastName("Bangaba");
-      user.setFirstName("Stan");
-      user.setUsername("stanford");
-
-      credentials.setUsername(null);
-      credentials.setPassword(null);;
-
-      return "/index.xhtml";
-    }
-
-    FacesContext.getCurrentInstance().addMessage("Authentication failed", null);
-
-    return "failure";
+  public ExternalContext getFacesContext() {
+      return FacesContext.getCurrentInstance().getExternalContext();
   }
 
   public String logout() {
       System.out.println("Logging out...");
       user = null;
-      return "/index.xhtml";
+      SecurityUtils.getSubject().logout();
+      this.getFacesContext().invalidateSession();
+      try {
+        this.getFacesContext().redirect("login/auth.xhtml");
+      } catch(IOException e) {}
+      return "";
   }
 
 //  public void registerLoginToken(String username) {
@@ -88,8 +88,10 @@ public class LoginBean implements Serializable {
 //  }
 
   public boolean isLoggedIn() {
-    System.out.println("Is loggeIn user: " +(user != null));
-    return user != null;
+    if (this.getSubject() != null) {
+      return true;
+    }
+    return false;
   }
 
   public Optional<Map<String, Object>> getSessionMap() {

@@ -19,7 +19,7 @@
   </servlet>
   <servlet-mapping>
   <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>/faces/*</url-pattern>
+    <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
   <context-param>
   <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
@@ -33,12 +33,32 @@
   <listener>
   <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>
+  <listener>
+    <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+  </listener>
+
+	<filter>
+	    <filter-name>ShiroFilter</filter-name>
+	    <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+	    <filter-name>ShiroFilter</filter-name>
+	   	<url-pattern>/*</url-pattern>
+	    <dispatcher>REQUEST</dispatcher>
+	    <dispatcher>FORWARD</dispatcher>
+	    <dispatcher>INCLUDE</dispatcher>
+	    <dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+  <welcome-file-list>
+      <welcome-file>/index.xhtml</welcome-file>
+  </welcome-file-list>
   <error-page>
     <error-code>404</error-code>
-    <location>/faces/error.xhtml</location>
+    <location>/error.xhtml</location>
   </error-page>
   <error-page>
     <error-code>500</error-code>
-    <location>/faces/error.xhtml</location>
+    <location>/error.xhtml</location>
   </error-page>
 </web-app>

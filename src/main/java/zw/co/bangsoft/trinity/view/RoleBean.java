@@ -3,6 +3,7 @@ package zw.co.bangsoft.trinity.view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
@@ -116,7 +117,13 @@ public class RoleBean implements Serializable {
 		try {
 			if (this.id == null) {
 				this.entityManager.persist(this.role);
-				entityService.addRoleAccessRights(role);
+
+				Future<String> result = entityService.addRoleAccessRights(role);
+
+				if (result.isDone()) {
+				    System.out.println("Response is: " + result.get());
+				}
+
 				return "search?faces-redirect=true";
 			} else {
 				this.entityManager.merge(this.role);

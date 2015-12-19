@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
 	<title>#{empty pageTitle ? 'Page Title' : pageTitle}</title>
@@ -16,20 +17,18 @@
 		<div class="navbar-inner">
 			<div class="container">
 				<h:link id="brandLink" outcome="/index.xhtml" styleClass="brand">
-					<h:outputText value="Welcome to " rendered=" #{loginBean.user != null} "/>
                     Trinity-core
-                    <h:outputText value=",  #{loginBean.user.firstName} #{loginBean.user.lastName}" rendered="#{loginBean.loggedIn} "/>
 				</h:link>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li><a href="http://forge.jboss.org/document/hands-on-lab">How to Customize</a></li>
-						<li style="margin-left: 550px">
-							<h:form rendered="#{loginBean.loggedIn}">
-								<h:commandLink action="#{loginBean.logout()}">
-									<h4 style="color: white; margin-top: 7px;"><h:outputText value="Logout" /></h4>
-								</h:commandLink>
-							</h:form>
-						</li>
+						
+						<h:form rendered="#{loginBean.loggedIn}" 
+								style="margin-left: 500px; margin-top: 10px; color: olive; font-size: 12px; color: #B5B5B5; ">
+							<li><h:outputText value="Welcome,  #{loginBean.user.firstName} #{loginBean.user.lastName}  ["/>
+								<h:commandLink action="#{loginBean.logout()}" value="Logout ]" style="color: white;"/>
+							</li>
+						</h:form>
 					</ul>
 				</div>
 			</div>
@@ -41,7 +40,6 @@
 			<h:link id="homeLink" outcome="/index.xhtml">
 				<img src='#{resource["forge-logo.png"]}' alt="Forge... get hammered" border="0" />
 			</h:link>
-			<h:panelGroup rendered="#{loginBean.loggedIn}">
 				<ul>
 					<li>
 						<h:link outcome="/accessRight/search" value="Access Right"/>
@@ -59,57 +57,16 @@
 						<h:link outcome="/userRole/search" value="User Role"/>
 					</li>
 				</ul>
-			</h:panelGroup>					
 		</div>
-		<div id="content">
-			
+		<div id="content">			
 			<h1>
 				<ui:insert name="header" />
 			</h1>
-			<h:panelGroup rendered="#{loginBean.loggedIn}">	
-				<h2>
-					<ui:insert name="subheader" />
-				</h2>
-				<ui:insert name="main" />
-			</h:panelGroup>
-			<h:panelGroup rendered="#{!loginBean.loggedIn}">
-				<h:form>
-					<h:messages globalOnly="true" styleClass="error"/>
-				<table id="login" class="table-bordered" title="Login" frame="border"
-						align="left" cellpadding="5"
-						style="margin-left: 40px; margin-top: 20px; border-color: olive">
-						<thead>
-							<tr>
-								<th>Please Login</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<h:outputLabel for="username" value="Username:" />
-									<h:inputText id="username" value="#{loginBean.credentials.username}" 
-										style="margin-left: 5%; margin-right: 5%;"/>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<h:outputLabel for="password" value="Password:"/>
-									<h:inputSecret id="password" value="#{loginBean.credentials.password}" 
-										style="margin-left: 5%"/>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<center>
-										<h:commandButton action="#{loginBean.login()}" value="Login" 
-											style="margin-left: 5%; margin-bottom: 3%" styleClass="btn btn-primary"/> 
-									</center>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					</h:form>
-				</h:panelGroup>
+			
+			<h2>
+				<ui:insert name="subheader" />
+			</h2>
+			<ui:insert name="main" />
 		</div>
 	</div>
 
