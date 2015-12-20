@@ -55,7 +55,7 @@ public class User implements Serializable {
 	private String username;
 
 	@Column
-	@Size(min = 10, max = 100)
+	@Size(min = 8, max = 100)
 	private String password;
 
 	@Column
@@ -196,9 +196,6 @@ public class User implements Serializable {
 	}
 
 	public void setPassword(String password) {
-	  if (password != null) {
-	    password = new Sha256Hash(password).toHex();
-	  }
 		this.password = password;
 	}
 

@@ -39,7 +39,7 @@ public class Role implements Serializable {
 	@OneToMany(targetEntity = RoleAccessRight.class, mappedBy = "role")
 	private List<RoleAccessRight> roleAccessRights;
 
-	@OneToMany(targetEntity = UserRole.class, mappedBy = "user")
+	@OneToMany(targetEntity = UserRole.class, mappedBy = "role")
 	private List<UserRole> roleUsers;
 
 	public Long getId() {

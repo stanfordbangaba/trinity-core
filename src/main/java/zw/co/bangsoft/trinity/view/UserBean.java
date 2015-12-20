@@ -24,6 +24,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.shiro.crypto.hash.Sha256Hash;
+
 import zw.co.bangsoft.trinity.auth.User;
 
 /**
@@ -112,6 +114,9 @@ public class UserBean implements Serializable {
 
 		try {
 			if (this.id == null) {
+			  if (user.getPassword() != null) {
+			      user.setPassword(new Sha256Hash(user.getPassword()).toHex());
+		    }
 				this.entityManager.persist(this.user);
 				return "search?faces-redirect=true";
 			} else {

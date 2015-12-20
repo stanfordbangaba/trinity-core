@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<head>
+	<title>Login</title>
+	<link rel="icon" href='#{resource["favicon.ico"]}' />
+	<link rel="stylesheet" href='#{resource["bootstrap.css"]}' />
+	<link rel="stylesheet" href='#{resource["forge-style.css"]}' />
+</head>
+
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<h3 style="color: white;">Trinity-core</h3>
+			</div>
+		</div>
+	</div>
+	<div class="container forgecontainer">
+		<div id="navigation">
+			<img src='#{resource["forge-logo.png"]}' alt="Trinity... all-in-one" border="0" />
+		</div>
+		<div id="content">
+			<h1>User Authentication</h1>
+			<br/>
+			<h:form id="auth">
+			<!-- 
+				<c:if test="${shiroLoginFailure != null}">
+					<span class="error">Authentication failed</span>
+				</c:if>
+			 -->
+				<fieldset>
+					<legend style="color: olive;">Please Login</legend>
+					<h:messages globalOnly="true" styleClass="error" />
+					<p>
+						<label for="username">Username:</label>
+						<h:inputText type="text" id="username" name="username" value="#{loginBean.username}"/>
+					</p>
+					<p>
+						<label for="password">Password:</label>
+						<h:inputSecret type="password" id="password" name="password" value="#{loginBean.password}"/>
+					</p>
+					
+					<p>
+						<label></label>
+						<h:commandButton type="submit" action="#{loginBean.login()}" value="Login" class="btn btn-primary"/>
+					</p>
+				</fieldset>
+			</h:form>
+		</div>
+		<footer>
+			<div id="footer-wrapper">
+	    		<p>Powered by <a href="http://jboss.org/forge">Bangsoft</a></p>
+	    	</div>
+		</footer>
+	</div>
+</body>
+</html>

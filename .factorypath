@@ -18,6 +18,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/shiro/shiro-web/1.2.4/shiro-web-1.2.4.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/mysql/mysql-connector-java/5.1.38/mysql-connector-java-5.1.38.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="PLUGIN" id="com.ibm.etools.javaee.cdi.ext.ui" enabled="false" runInBatchMode="false"/>
     <factorypathentry kind="PLUGIN" id="com.ibm.jaxrs.annotations.processor" enabled="false" runInBatchMode="false"/>
     <factorypathentry kind="PLUGIN" id="com.ibm.jee.annotations.processor" enabled="false" runInBatchMode="false"/>
