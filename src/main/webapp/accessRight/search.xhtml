@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
 	template="/resources/scaffold/pageTemplate.xhtml">
 
 	<f:metadata>
@@ -25,6 +26,7 @@
 
 	<ui:define name="main">
 		<h:form id="search">
+			<h:messages globalOnly="true" styleClass="error"/>
 			<f:validateBean disabled="true">
 				<h:panelGroup styleClass="search">
 
@@ -63,6 +65,33 @@
 					<h:link outcome="/accessRight/view">
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemUrl" value="#{_item.url}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Http Method"/>
+					</f:facet>
+					<h:link outcome="/accessRight/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemHttpMethod" value="#{_item.httpMethod}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Description"/>
+					</f:facet>
+					<h:link outcome="/accessRight/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemDescription" value="#{_item.description}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Enabled"/>
+					</f:facet>
+					<h:link outcome="/accessRight/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemEnabled" value="#{_item.enabled}"/>
 					</h:link>
 				</h:column>
 			</h:dataTable>

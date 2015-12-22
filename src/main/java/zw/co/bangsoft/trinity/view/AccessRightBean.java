@@ -10,6 +10,7 @@ import javax.ejb.Stateful;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -96,6 +97,7 @@ public class AccessRightBean implements Serializable {
 
 		if (this.id == null) {
 			this.accessRight = this.example;
+			addMessage("Not found", true);
 		} else {
 			this.accessRight = findById(getId());
 		}
@@ -117,15 +119,16 @@ public class AccessRightBean implements Serializable {
 			if (this.id == null) {
 				this.entityManager.persist(this.accessRight);
 				entityService.addRoleAccessRights(accessRight);
+				addMessage("Access Right created", false);
 				return "search?faces-redirect=true";
 			} else {
 				this.entityManager.merge(this.accessRight);
+        addMessage("Access Right updated", false);
 				return "view?faces-redirect=true&id="
 						+ this.accessRight.getId();
 			}
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+			addMessage(e.getMessage(), true);
 			return null;
 		}
 	}
@@ -140,8 +143,7 @@ public class AccessRightBean implements Serializable {
 			this.entityManager.flush();
 			return "search?faces-redirect=true";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+			addMessage(e.getMessage(), true);
 			return null;
 		}
 	}
@@ -299,5 +301,15 @@ public class AccessRightBean implements Serializable {
 		AccessRight added = this.add;
 		this.add = new AccessRight();
 		return added;
+	}
+
+	public void addMessage(String message, boolean error) {
+	  FacesMessage msg = null;
+	  if (error) {
+	    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
+	  } else {
+	     msg = new FacesMessage(FacesMessage.SEVERITY_INFO, message, message);
+	  }
+	  FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 }

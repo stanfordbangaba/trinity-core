@@ -5,6 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:forgeview="http://jboss.org/forge/view"
+	xmlns:p="http://primefaces.org/ui"
 	template="/resources/scaffold/pageTemplate.xhtml">
 
 	<f:metadata>
@@ -73,6 +74,15 @@
 					<h:link outcome="/roleAccessRight/view">
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="forgeviewdisplayitemAccessRight" value="#{forgeview:display(_item.accessRight)}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Granted"/>
+					</f:facet>
+					<h:link outcome="/roleAccessRight/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemGranted" value="#{forgeview:display(_item.granted)}"/>
 					</h:link>
 				</h:column>
 			</h:dataTable>

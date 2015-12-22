@@ -40,6 +40,26 @@
 						<h:outputText id="forgeviewdisplayitemAccessRight" value="#{forgeview:display(_item.accessRight)}"/>
 					</h:link>
 				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Granted"/>
+					</f:facet>
+					<h:link outcome="/roleAccessRight/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemGranted" value="#{forgeview:display(_item.granted)}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value=""/>
+					</f:facet>
+					<h:form>
+						<f:param name="id" value="#{_item.id}"/>
+						<h:commandButton action="#{roleAccessRightBean.toggleGranted}" type="button" value="#{ _item.granted? 'REVOKE' : 'GRANT' }">
+							<f:ajax></f:ajax> 
+						</h:commandButton>
+					</h:form> 
+				</h:column>
 			</h:dataTable>
 			<h:outputText/>
 		</h:panelGrid>

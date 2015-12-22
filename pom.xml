@@ -11,6 +11,21 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <repositories>
+  	<repository>
+       <id>deluan.repo</id>
+       <name>Deluan's Public Repository</name>
+       <url>http://deluan.googlecode.com/svn/releases</url>
+    </repository>
+    <repository>
+       <id>deluan.snapshots</id>
+       <name>Deluan's Public Snapshots Repository</name>
+       <url>http://deluan.googlecode.com/svn/snapshots</url>
+       <releases>
+           <enabled>false</enabled>
+       </releases>
+     </repository>
+  </repositories>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -139,6 +154,17 @@
 		<artifactId>mysql-connector-java</artifactId>
 		<version>5.1.38</version>
 	</dependency>
+	<dependency>
+	    <groupId>org.primefaces</groupId>
+	    <artifactId>primefaces</artifactId>
+	    <version>5.3</version>
+	</dependency>
+	<dependency>
+       <groupId>org.apache.shiro</groupId>
+       <artifactId>shiro-faces</artifactId>
+       <!-- See the latest version on the project's homepage -->
+       <version>2.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>trinity-core</finalName>

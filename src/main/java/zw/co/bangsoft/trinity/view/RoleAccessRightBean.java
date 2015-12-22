@@ -293,4 +293,8 @@ public class RoleAccessRightBean implements Serializable {
 		this.add = new RoleAccessRight();
 		return added;
 	}
+
+	public String toggleGranted() {
+	  return null;
+	}
 }

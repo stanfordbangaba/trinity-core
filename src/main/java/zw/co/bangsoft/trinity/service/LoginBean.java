@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
@@ -26,7 +26,7 @@ import zw.co.bangsoft.trinity.annotation.UserLoggedIn;
 import zw.co.bangsoft.trinity.auth.User;
 
 @Named
-@SessionScoped
+@RequestScoped
 public class LoginBean implements Serializable {
 
   /**
@@ -43,8 +43,6 @@ public class LoginBean implements Serializable {
 
   private String username;
   private String password;
-
-  private Subject subject;
 
   private User user;
 
@@ -76,8 +74,6 @@ public class LoginBean implements Serializable {
         System.out.println("Trying programmatic login..");
         SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password));
         System.out.println("Authentication success for user: " + username);
-        System.out.println("Clearing sensitive fields ...");
-        password = null;
 
         System.out.println("Verifying if user is enabled...");
         user = this.getUser();
@@ -100,6 +96,17 @@ public class LoginBean implements Serializable {
         if (errorMsg != null) {
           throw new Exception(errorMsg);
         }
+
+        //roles and permissions debug
+        getSubject().getPrincipals().asList()
+          .forEach(p -> System.out.println("Principal item: " + p));
+
+        System.out.println("Has role ADMIN: " + getSubject().hasRole("ADMIN"));
+
+        System.out.println("Is permitted accessRight:create -> " + getSubject().isPermitted("accessRight:create"));
+        System.out.println("Is permitted user:create -> " + getSubject().isPermitted("user:create"));
+
+
      //   this.getFacesContext().redirect(HOME_URL);
         return HOME_URL;
     } catch (AuthenticationException e) {
@@ -110,7 +117,7 @@ public class LoginBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(errorMsg));
         System.out.println("Exception: " + e.getMessage()); // TODO: logger.
         if (isLoggedIn()) {
-            this.logout();
+          SecurityUtils.getSubject().logout();
         }
     }
     return LOGIN_URL;
@@ -131,10 +138,6 @@ public class LoginBean implements Serializable {
 
   public Subject getSubject() {
     return SecurityUtils.getSubject();
-  }
-
-  public void setSubject(Subject subject) {
-    this.subject = subject;
   }
 
   public ExternalContext getFacesContext() {

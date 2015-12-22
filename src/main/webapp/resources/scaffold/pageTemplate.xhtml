@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:shiro="http://shiro.apache.org/tags">
 
 <h:head>
 	<title>#{empty pageTitle ? 'Page Title' : pageTitle}</title>
@@ -34,42 +35,58 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<div class="container forgecontainer">
-		<div id="navigation">
-			<h:link id="homeLink" outcome="/index.xhtml">
-				<img src='#{resource["forge-logo.png"]}' alt="Forge... get hammered" border="0" />
-			</h:link>
-				<ul>
-					<li>
-						<h:link outcome="/accessRight/search" value="Access Right"/>
-					</li>
-					<li>
-						<h:link outcome="/role/search" value="Role"/>
-					</li>
-					<li>
-						<h:link outcome="/roleAccessRight/search" value="Role Access Right"/>
-					</li>
-					<li>
-						<h:link outcome="/user/search" value="User"/>
-					</li>
-					<li>
-						<h:link outcome="/userRole/search" value="User Role"/>
-					</li>
-				</ul>
-		</div>
-		<div id="content">			
-			<h1>
-				<ui:insert name="header" />
-			</h1>
-			
-			<h2>
-				<ui:insert name="subheader" />
-			</h2>
-			<ui:insert name="main" />
-		</div>
+		<shiro:authenticated>
+			<div id="navigation">
+				<h:link id="homeLink" outcome="/index.xhtml">
+					<img src='#{resource["forge-logo.png"]}' alt="Forge... get hammered" border="0" />
+				</h:link>
+					<ul>
+						<shiro:hasPermission name="accessRight:search">
+							<li>
+								<h:link outcome="/accessRight/search" value="Access Right" />
+							</li>
+						</shiro:hasPermission>
+						
+						<shiro:hasPermission name="role:search">
+							<li>
+								<h:link outcome="/role/search" value="Role"/>
+							</li>
+						</shiro:hasPermission>
+						
+						<shiro:hasPermission name="roleAccessRight:search">
+							<li>
+								<h:link outcome="/roleAccessRight/search" value="Role Access Right"/>
+							</li>
+						</shiro:hasPermission>
+						
+						<shiro:hasPermission name="user:search">
+							<li>
+								<h:link outcome="/user/search" value="User"/>
+							</li>
+						</shiro:hasPermission>
+						
+						<shiro:hasPermission name="userRole:search">
+							<li>
+								<h:link outcome="/userRole/search" value="User Role"/>
+							</li>
+						</shiro:hasPermission>
+					</ul>
+			</div>
+			<div id="content">			
+				<h1>
+					<ui:insert name="header" />
+				</h1>
+				
+				<h2>
+					<ui:insert name="subheader" />
+				</h2>
+				<ui:insert name="main" />
+			</div>
+		</shiro:authenticated>
 	</div>
-
+	
 	<footer>
 		<div id="footer-wrapper">
 	    	<p>Powered by <a href="http://jboss.org/forge">Bangsoft</a></p>
