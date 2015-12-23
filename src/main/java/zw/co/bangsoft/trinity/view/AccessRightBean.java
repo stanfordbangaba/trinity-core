@@ -9,8 +9,6 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -19,11 +17,15 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import org.omnifaces.util.Messages;
 
 import zw.co.bangsoft.trinity.auth.AccessRight;
 import zw.co.bangsoft.trinity.service.EntityService;
@@ -97,7 +99,7 @@ public class AccessRightBean implements Serializable {
 
 		if (this.id == null) {
 			this.accessRight = this.example;
-			addMessage("Not found", true);
+			Messages.addGlobalWarn("Not found");
 		} else {
 			this.accessRight = findById(getId());
 		}
@@ -119,16 +121,16 @@ public class AccessRightBean implements Serializable {
 			if (this.id == null) {
 				this.entityManager.persist(this.accessRight);
 				entityService.addRoleAccessRights(accessRight);
-				addMessage("Access Right created", false);
+				Messages.addGlobalInfo("Access Right created");
 				return "search?faces-redirect=true";
 			} else {
 				this.entityManager.merge(this.accessRight);
-        addMessage("Access Right updated", false);
+				Messages.addGlobalInfo("Access Right updated");
 				return "view?faces-redirect=true&id="
 						+ this.accessRight.getId();
 			}
 		} catch (Exception e) {
-			addMessage(e.getMessage(), true);
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}
@@ -143,7 +145,7 @@ public class AccessRightBean implements Serializable {
 			this.entityManager.flush();
 			return "search?faces-redirect=true";
 		} catch (Exception e) {
-			addMessage(e.getMessage(), true);
+		  Messages.addGlobalError(e.getMessage(), true);
 			return null;
 		}
 	}
@@ -248,14 +250,22 @@ public class AccessRightBean implements Serializable {
 	 * an HtmlSelectOneMenu)
 	 */
 
-	public List<AccessRight> getAll() {
+//	public List<AccessRight> getAll() {
+//	  CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+//		CriteriaQuery<AccessRight> criteria = cb.createQuery(AccessRight.class);
+//    Root<AccessRight> root = criteria.from(AccessRight.class);
+//
+//		return entityManager.createQuery(
+//				criteria.select(criteria.from(AccessRight.class))
+//				.orderBy(cb.asc(root.get("url"))))
+//				.getResultList();
+//	}
 
-		CriteriaQuery<AccessRight> criteria = this.entityManager
-				.getCriteriaBuilder().createQuery(AccessRight.class);
-		return this.entityManager.createQuery(
-				criteria.select(criteria.from(AccessRight.class)))
-				.getResultList();
-	}
+	@SuppressWarnings("unchecked")
+  public List<AccessRight> getAll() {
+	  Query query = entityManager.createQuery("SELECT a FROM AccessRight a ORDER BY a.url ASC");
+	  return (List<AccessRight>) query.getResultList();
+  }
 
 	@Resource
 	private SessionContext sessionContext;
@@ -303,13 +313,4 @@ public class AccessRightBean implements Serializable {
 		return added;
 	}
 
-	public void addMessage(String message, boolean error) {
-	  FacesMessage msg = null;
-	  if (error) {
-	    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
-	  } else {
-	     msg = new FacesMessage(FacesMessage.SEVERITY_INFO, message, message);
-	  }
-	  FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
 }

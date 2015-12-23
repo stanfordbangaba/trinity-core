@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -24,6 +25,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import org.omnifaces.util.Messages;
 
 import zw.co.bangsoft.trinity.auth.Role;
 import zw.co.bangsoft.trinity.service.EntityService;
@@ -130,8 +133,7 @@ public class RoleBean implements Serializable {
 				return "view?faces-redirect=true&id=" + this.role.getId();
 			}
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}
@@ -146,8 +148,7 @@ public class RoleBean implements Serializable {
 			this.entityManager.flush();
 			return "search?faces-redirect=true";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}
@@ -292,4 +293,8 @@ public class RoleBean implements Serializable {
 		this.add = new Role();
 		return added;
 	}
+
+	public void toggleGranted(ValueChangeEvent event) {
+    System.out.println("ajax called : " + event.getOldValue() + " -> " + event.getNewValue());
+  }
 }

@@ -13,6 +13,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -23,6 +25,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import org.omnifaces.util.Messages;
 
 import zw.co.bangsoft.trinity.auth.RoleAccessRight;
 import zw.co.bangsoft.trinity.auth.AccessRight;
@@ -122,8 +126,7 @@ public class RoleAccessRightBean implements Serializable {
 						+ this.roleAccessRight.getId();
 			}
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}
@@ -141,8 +144,7 @@ public class RoleAccessRightBean implements Serializable {
 			this.entityManager.flush();
 			return "search?faces-redirect=true";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}
@@ -294,7 +296,4 @@ public class RoleAccessRightBean implements Serializable {
 		return added;
 	}
 
-	public String toggleGranted() {
-	  return null;
-	}
 }

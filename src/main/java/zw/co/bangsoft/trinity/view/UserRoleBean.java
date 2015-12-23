@@ -24,6 +24,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.omnifaces.util.Messages;
+
 import zw.co.bangsoft.trinity.auth.UserRole;
 import zw.co.bangsoft.trinity.auth.Role;
 import zw.co.bangsoft.trinity.auth.User;
@@ -121,8 +123,7 @@ public class UserRoleBean implements Serializable {
 				return "view?faces-redirect=true&id=" + this.userRole.getId();
 			}
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}
@@ -137,8 +138,7 @@ public class UserRoleBean implements Serializable {
 			this.entityManager.flush();
 			return "search?faces-redirect=true";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}

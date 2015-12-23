@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -19,8 +18,6 @@ import javax.validation.constraints.Size;
 import zw.co.bangsoft.trinity.annotation.Email;
 import zw.co.bangsoft.trinity.model.Audit;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.shiro.crypto.hash.Sha256Hash;
 
 @Entity
 @Table(name = "user")
@@ -175,7 +172,15 @@ public class User implements Serializable {
 		this.audit = audit;
 	}
 
-	public String getUsername() {
+	public List<UserRole> getUserRoles() {
+    return userRoles;
+  }
+
+  public void setUserRoles(List<UserRole> userRoles) {
+    this.userRoles = userRoles;
+  }
+
+  public String getUsername() {
 		return username;
 	}
 

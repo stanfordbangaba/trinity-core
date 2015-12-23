@@ -25,45 +25,37 @@
 	<ui:define name="footer"/>
 
 	<ui:define name="main">
-		<h:panelGrid columnClasses="label,component,required" columns="3">
-			<h:outputLabel for="roleBeanRoleName" value="Name:"/>
-			<h:outputText id="roleBeanRoleName" value="#{roleBean.role.name}"/>
-			<h:outputText/>
-			<h:outputLabel for="roleBeanRoleRoleAccessRights" value="Role Access Rights:"/>
-			<h:dataTable id="roleBeanRoleRoleAccessRights" styleClass="data-table" value="#{roleBean.role.roleAccessRights}" var="_item">
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Access Right"/>
-					</f:facet>
-					<h:link outcome="/roleAccessRight/view">
-						<f:param name="id" value="#{_item.id}"/>
-						<h:outputText id="forgeviewdisplayitemAccessRight" value="#{forgeview:display(_item.accessRight)}"/>
-					</h:link>
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Granted"/>
-					</f:facet>
-					<h:link outcome="/roleAccessRight/view">
-						<f:param name="id" value="#{_item.id}"/>
-						<h:outputText id="forgeviewdisplayitemGranted" value="#{forgeview:display(_item.granted)}"/>
-					</h:link>
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value=""/>
-					</f:facet>
-					<h:form>
-						<f:param name="id" value="#{_item.id}"/>
-						<h:commandButton action="#{roleAccessRightBean.toggleGranted}" type="button" value="#{ _item.granted? 'REVOKE' : 'GRANT' }">
-							<f:ajax></f:ajax> 
-						</h:commandButton>
-					</h:form> 
-				</h:column>
-			</h:dataTable>
-			<h:outputText/>
-		</h:panelGrid>
-
+		<h:form>
+			<h:panelGrid columnClasses="label,component,required" columns="3">
+				<h:outputLabel for="roleBeanRoleName" value="Name:"/>
+				<h:outputText id="roleBeanRoleName" value="#{roleBean.role.name}"/>
+				<h:outputText/>
+				<h:outputLabel for="roleBeanRoleRoleAccessRights" value="Role Access Rights:"/>
+				<h:dataTable id="roleBeanRoleRoleAccessRights" styleClass="data-table" value="#{roleBean.role.roleAccessRights}" var="_item">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Access Right"/>
+						</f:facet>
+						<h:link outcome="/roleAccessRight/view">
+							<f:param name="id" value="#{_item.id}"/>
+							<h:outputText id="forgeviewdisplayitemAccessRight" value="#{forgeview:display(_item.accessRight)}"/>
+						</h:link>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Granted"/>
+						</f:facet>
+						<h:panelGroup>
+							<f:param name="id" value="#{_item.id}"/>
+							<h:selectBooleanCheckbox value="#{_item.granted}" id="forgeviewdisplayitemGranted">
+								<f:ajax event="click" execute="@this"></f:ajax>
+							</h:selectBooleanCheckbox>
+						</h:panelGroup>
+					</h:column>
+				</h:dataTable>
+				<h:outputText/>
+			</h:panelGrid>
+		</h:form>
 		<div class="buttons">
 			<h:link value="View All" outcome="search" styleClass="btn btn-primary"/> 
 			<h:link value="Edit" outcome="create" includeViewParams="true" styleClass="btn btn-primary"/>

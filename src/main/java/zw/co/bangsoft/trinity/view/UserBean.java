@@ -25,6 +25,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.omnifaces.util.Messages;
 
 import zw.co.bangsoft.trinity.auth.User;
 
@@ -124,8 +125,7 @@ public class UserBean implements Serializable {
 				return "view?faces-redirect=true&id=" + this.user.getId();
 			}
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}
@@ -140,8 +140,7 @@ public class UserBean implements Serializable {
 			this.entityManager.flush();
 			return "search?faces-redirect=true";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+		  Messages.addGlobalError(e.getMessage());
 			return null;
 		}
 	}
