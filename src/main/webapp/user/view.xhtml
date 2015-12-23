@@ -4,7 +4,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	template="/resources/scaffold/pageTemplate.xhtml">
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/template/pageTemplate.xhtml">
 
 	<f:metadata>
 		<f:viewParam name="id" value='#{userBean.id}'/>
@@ -49,17 +50,8 @@
 			<h:outputLabel for="userBeanUserStatus" value="Status:"/>
 			<h:outputText id="userBeanUserStatus" value="#{userBean.user.status}"/>
 			<h:outputText/>
-			<h:outputLabel for="userBeanUserUsername" value="Username:"/>
-			<h:outputText id="userBeanUserUsername" value="#{userBean.user.username}"/>
-			<h:outputText/>
-			<h:outputLabel value="Enabled:"/>
-			<h:outputText styleClass="#{userBean.user.enabled ? 'boolean-true' : 'boolean-false'}" value=""/>
-			<h:outputText/>
-			<h:outputLabel for="userBeanUserPassword" value="Password:"/>
-			<h:outputText id="userBeanUserPassword" value="#{userBean.user.password}"/>
-			<h:outputText/>
-			<h:outputLabel for="userBeanUserAudit" value="Audit:"/>
-			<h:panelGrid columnClasses="label,component,required" columns="3" id="userBeanUserAudit" >
+			<h:outputLabel for="userBeanUserAudit" value="Audit:" />
+			<h:panelGrid columnClasses="label,component,required" columns="3" id="userBeanUserAudit">
 				<h:outputLabel for="userBeanUserAuditDateCreated" value="Date Created:"/>
 				<h:outputText id="userBeanUserAuditDateCreated" value="#{userBean.user.audit.dateCreated}">
 					<f:convertDateTime/>
@@ -77,6 +69,28 @@
 				<h:outputText id="userBeanUserAuditLastUpdatedBy" value="#{userBean.user.audit.lastUpdatedBy}"/>
 				<h:outputText/>
 			</h:panelGrid>
+			<h:outputText/>
+			<h:outputLabel for="userBeanUserUserRoles" value="User Roles:"/>
+			<h:dataTable id="userBeanUserUserRoles" styleClass="data-table" value="#{userBean.user.userRoles}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Role"/>
+					</f:facet>
+					<h:link outcome="/userRole/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemRole" value="#{forgeview:display(_item.role)}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<h:outputText/>
+			<h:outputLabel for="userBeanUserUsername" value="Username:"/>
+			<h:outputText id="userBeanUserUsername" value="#{userBean.user.username}"/>
+			<h:outputText/>
+			<h:outputLabel value="Enabled:"/>
+			<h:outputText styleClass="#{userBean.user.enabled ? 'boolean-true' : 'boolean-false'}" value=""/>
+			<h:outputText/>
+			<h:outputLabel for="userBeanUserPassword" value="Password:"/>
+			<h:outputText id="userBeanUserPassword" value="#{userBean.user.password}"/>
 			<h:outputText/>
 		</h:panelGrid>
 

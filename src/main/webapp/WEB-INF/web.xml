@@ -34,31 +34,29 @@
   <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>
   <listener>
-    <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+  <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
   </listener>
-
-	<filter>
-	    <filter-name>ShiroFilter</filter-name>
-	    <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
-	</filter>
-
-	<filter-mapping>
-	    <filter-name>ShiroFilter</filter-name>
-	   	<url-pattern>/*</url-pattern>
-	    <dispatcher>REQUEST</dispatcher>
-	    <dispatcher>FORWARD</dispatcher>
-	    <dispatcher>INCLUDE</dispatcher>
-	    <dispatcher>ERROR</dispatcher>
-	</filter-mapping>
+  <filter>
+	<filter-name>ShiroFilter</filter-name>
+    <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+  </filter>
+  <filter-mapping>
+	<filter-name>ShiroFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
   <welcome-file-list>
-      <welcome-file>/index.xhtml</welcome-file>
+  <welcome-file>/index.xhtml</welcome-file>
   </welcome-file-list>
   <error-page>
     <error-code>404</error-code>
-    <location>/error.xhtml</location>
+    <location>/faces/error.xhtml</location>
   </error-page>
   <error-page>
     <error-code>500</error-code>
-    <location>/error.xhtml</location>
+    <location>/faces/error.xhtml</location>
   </error-page>
 </web-app>

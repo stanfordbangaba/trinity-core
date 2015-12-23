@@ -5,7 +5,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	template="/resources/scaffold/pageTemplate.xhtml">
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/template/pageTemplate.xhtml">
 
 	<f:metadata>
 		<f:viewParam name="id" value='#{userBean.id}'/>
@@ -117,6 +118,36 @@
 						</h:panelGroup>
 						<h:outputText/>
 					</h:panelGrid>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="userBeanUserUserRoles" value="User Roles:"/>
+				<h:panelGroup>
+					<ui:param name="_collection" value="#{userBean.user.userRoles}"/>
+					<h:dataTable id="userBeanUserUserRoles" styleClass="data-table" value="#{_collection}" var="_item">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Role"/>
+							</f:facet>
+							<h:link outcome="/userRole/view">
+								<f:param name="id" value="#{_item.id}"/>
+								<h:outputText id="forgeviewdisplayitemRole" value="#{forgeview:display(_item.role)}"/>
+							</h:link>
+							<f:facet name="footer">
+								<h:selectOneMenu converter="#{roleBean.converter}" id="userRoleBeanAddRole" value="#{userRoleBean.add.role}">
+									<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{roleBean.all}" var="_item"/>
+								</h:selectOneMenu>
+								<h:message for="userRoleBeanAddRole" styleClass="error"/>
+							</f:facet>
+						</h:column>
+						<h:column footerClass="remove-column" headerClass="remove-column">
+							<h:commandLink action="#{_collection.remove(_item)}" styleClass="remove-button"/>
+							<f:facet name="footer">
+								<h:commandLink action="#{_collection.add(userRoleBean.added)}" id="userBeanUserUserRolesAdd" styleClass="add-button">
+									<f:setPropertyActionListener target="#{userRoleBean.add.user}" value="#{userBean.user}"/>
+								</h:commandLink>
+							</f:facet>
+						</h:column>
+					</h:dataTable>
 				</h:panelGroup>
 				<h:outputText/>
 				<h:outputLabel for="userBeanUserUsername" value="Username:"/>

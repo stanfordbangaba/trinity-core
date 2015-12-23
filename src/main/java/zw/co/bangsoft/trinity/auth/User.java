@@ -173,14 +173,14 @@ public class User implements Serializable {
 	}
 
 	public List<UserRole> getUserRoles() {
-    return userRoles;
-  }
+		return userRoles;
+	}
 
-  public void setUserRoles(List<UserRole> userRoles) {
-    this.userRoles = userRoles;
-  }
+	public void setUserRoles(List<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
 
-  public String getUsername() {
+	public String getUsername() {
 		return username;
 	}
 
