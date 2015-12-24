@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:shiro="http://shiro.apache.org/tags"
 	template="/resources/template/pageTemplate.xhtml">
 
 	<f:metadata>
@@ -61,8 +62,12 @@
 						<h:outputText/>
 					</h:panelGrid>
 					<h:panelGroup styleClass="buttons">
-						<h:commandLink value="Search" action='#{userBean.search}' styleClass="btn btn-primary"/>
-						<h:commandLink value="Create New" action='#{userBean.create}' styleClass="btn btn-primary"/>
+						<shiro:hasPermission name="user:search">
+							<h:commandLink value="Search" action='#{userBean.search}' styleClass="btn btn-primary"/>
+						</shiro:hasPermission>
+						<shiro:hasPermission name="user:create">
+							<h:commandLink value="Create New" action='#{userBean.create}' styleClass="btn btn-primary"/>
+						</shiro:hasPermission>
 					</h:panelGroup>
 				</h:panelGroup>
 			</f:validateBean>

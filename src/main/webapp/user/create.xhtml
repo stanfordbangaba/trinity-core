@@ -6,6 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:forgeview="http://jboss.org/forge/view"
+	xmlns:shiro="http://shiro.apache.org/tags"
 	template="/resources/template/pageTemplate.xhtml">
 
 	<f:metadata>
@@ -171,13 +172,17 @@
 			</h:panelGrid>
 
 			<div class="buttons">
-				<h:commandLink value="Save" action='#{userBean.update}' styleClass="btn btn-primary"/>
+				<shiro:hasPermission name="user:create">
+					<h:commandLink value="Save" action='#{userBean.update}' styleClass="btn btn-primary"/>
+				</shiro:hasPermission>
 				<c:choose>
 					<c:when test='#{!empty userBean.id}'>
 						<h:link value="Cancel" outcome="view" styleClass="btn btn-primary">
 							<f:param name="id" value='#{userBean.id}'/>
 						</h:link>
-						<h:commandLink value="Delete" action='#{userBean.delete}' styleClass="btn btn-primary"/>
+						<shiro:hasPermission name="user:delete">
+							<h:commandLink value="Delete" action='#{userBean.delete}' styleClass="btn btn-primary"/>
+						</shiro:hasPermission>
 					</c:when>
 					<c:otherwise>
 						<h:link value="Cancel" outcome="search" styleClass="btn btn-primary"/>

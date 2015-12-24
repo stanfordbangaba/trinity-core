@@ -5,6 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:forgeview="http://jboss.org/forge/view"
+	xmlns:shiro="http://shiro.apache.org/tags"
 	template="/resources/template/pageTemplate.xhtml">
 
 	<f:metadata>
@@ -57,9 +58,15 @@
 			</h:panelGrid>
 		</h:form>
 		<div class="buttons">
-			<h:link value="View All" outcome="search" styleClass="btn btn-primary"/> 
-			<h:link value="Edit" outcome="create" includeViewParams="true" styleClass="btn btn-primary"/>
-			<h:link value="Create New" outcome="create" styleClass="btn btn-primary"/>
+			<shiro:hasPermission name="role:search">
+				<h:link value="View All" outcome="search" styleClass="btn btn-primary"/> 
+			</shiro:hasPermission>
+			<shiro:hasPermission name="role:create">
+				<h:link value="Edit" outcome="edit" includeViewParams="true" styleClass="btn btn-primary"/>
+			</shiro:hasPermission>
+			<shiro:hasPermission name="role:create">
+				<h:link value="Create New" outcome="create" styleClass="btn btn-primary"/>
+			</shiro:hasPermission>
 		</div>
 	</ui:define>
 

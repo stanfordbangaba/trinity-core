@@ -99,7 +99,6 @@ public class AccessRightBean implements Serializable {
 
 		if (this.id == null) {
 			this.accessRight = this.example;
-			Messages.addGlobalWarn("Not found");
 		} else {
 			this.accessRight = findById(getId());
 		}
