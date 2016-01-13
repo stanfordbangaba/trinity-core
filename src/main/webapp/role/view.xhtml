@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:forgeview="http://jboss.org/forge/view"
 	xmlns:shiro="http://shiro.apache.org/tags"
 	template="/resources/template/pageTemplate.xhtml">
@@ -32,28 +33,40 @@
 				<h:outputText id="roleBeanRoleName" value="#{roleBean.role.name}"/>
 				<h:outputText/>
 				<h:outputLabel for="roleBeanRoleRoleAccessRights" value="Role Access Rights:"/>
-				<h:dataTable id="roleBeanRoleRoleAccessRights" styleClass="data-table" value="#{roleBean.role.roleAccessRights}" var="_item">
-					<h:column>
+				<p:dataTable id="roleBeanRoleRoleAccessRights" value="#{roleBean.role.roleAccessRights}" var="_item">
+					<p:column>
 						<f:facet name="header">
-							<h:outputText value="Access Right"/>
+							<h:outputText value="URL"/>
 						</f:facet>
 						<h:link outcome="/roleAccessRight/view">
 							<f:param name="id" value="#{_item.id}"/>
-							<h:outputText id="forgeviewdisplayitemAccessRight" value="#{forgeview:display(_item.accessRight)}"/>
+							<h:outputText id="forgeviewdisplayitemAccessRightUrl" 
+								value="#{forgeview:display(_item.accessRight.url)}"/>
 						</h:link>
-					</h:column>
-					<h:column>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Description"/>
+						</f:facet>
+						<h:link outcome="/roleAccessRight/view">
+							<f:param name="id" value="#{_item.id}"/>
+							<h:outputText id="forgeviewdisplayitemAccessRightDescription" 
+								value="#{forgeview:display(_item.accessRight.description)}"/>
+						</h:link>
+					</p:column>
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Granted"/>
 						</f:facet>
 						<h:panelGroup>
 							<f:param name="id" value="#{_item.id}"/>
-							<h:selectBooleanCheckbox value="#{_item.granted}" id="forgeviewdisplayitemGranted">
-								<f:ajax event="click" execute="@this"></f:ajax>
-							</h:selectBooleanCheckbox>
+							<p:selectBooleanCheckbox value="#{_item.granted}" id="forgeviewdisplayitemGranted" 
+									valueChangeListener="#{roleBean.toggleGranted}">
+								<f:ajax execute="@this"></f:ajax>
+							</p:selectBooleanCheckbox>
 						</h:panelGroup>
-					</h:column>
-				</h:dataTable>
+					</p:column>
+				</p:dataTable>
 				<h:outputText/>
 			</h:panelGrid>
 		</h:form>

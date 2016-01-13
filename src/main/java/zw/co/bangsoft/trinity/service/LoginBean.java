@@ -11,6 +11,7 @@ import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -20,6 +21,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
+import org.primefaces.context.RequestContext;
 
 import zw.co.bangsoft.trinity.annotation.LoggedIn;
 import zw.co.bangsoft.trinity.annotation.UserLoggedIn;
@@ -66,36 +68,41 @@ public class LoginBean implements Serializable {
     this.password = password;
   }
 
-  public String login() throws IOException {
+  public void login(ActionEvent event) {
 
     String errorMsg = null;
+    RequestContext context = RequestContext.getCurrentInstance();
+    boolean loggedIn = false;
 
     try {
+
         System.out.println("Trying programmatic login..");
         SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password));
         System.out.println("Authentication success for user: " + username);
 
         System.out.println("Verifying if user is enabled...");
         user = this.getUser();
-        if (!user.getEnabled()) {
+        if (!user.isEnabled()) {
           errorMsg = "User account disabled";
         }
-        if (user.getAccountExpired()) {
+        if (user.isAccountExpired()) {
           errorMsg = "User account expired";
         }
-        if (user.getAccountLocked()) {
+        if (user.isAccountLocked()) {
           errorMsg = "User account locked";
         }
-        if (user.getPasswordExpired()) {
+        if (user.isPasswordExpired()) {
           errorMsg = "User password expired";
         }
-        if (user.getShouldChangePwd()) {
+        if (user.isShouldChangePwd()) {
           errorMsg = "User should change password";
         }
 
         if (errorMsg != null) {
           throw new Exception(errorMsg);
         }
+
+        loggedIn = true;
 
         //roles and permissions debug
         getSubject().getPrincipals().asList()
@@ -106,9 +113,8 @@ public class LoginBean implements Serializable {
         System.out.println("Is permitted accessRight:create -> " + getSubject().isPermitted("accessRight:create"));
         System.out.println("Is permitted user:create -> " + getSubject().isPermitted("user:create"));
 
-
      //   this.getFacesContext().redirect(HOME_URL);
-        return HOME_URL;
+     //   return HOME_URL;
     } catch (AuthenticationException e) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Unknown user, please try again"));
         System.out.println("AuthenticationException: " + e.getMessage()); // TODO: logger.
@@ -120,7 +126,8 @@ public class LoginBean implements Serializable {
           SecurityUtils.getSubject().logout();
         }
     }
-    return LOGIN_URL;
+    context.addCallbackParam("loggedIn", loggedIn);
+    //return LOGIN_URL;
 }
 
   @Produces @LoggedIn

@@ -28,7 +28,7 @@ import zw.co.bangsoft.trinity.auth.User;
 @Stateless
 @Path("forge/users")
 public class UserEndpoint {
-	@PersistenceContext(unitName = "trinity-core-persistence-unit")
+	@PersistenceContext(unitName = "trinity-core")
 	private EntityManager em;
 
 	@POST

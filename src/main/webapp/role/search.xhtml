@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:shiro="http://shiro.apache.org/tags"
 	template="/resources/template/pageTemplate.xhtml">
 
@@ -48,8 +49,8 @@
 				</h:panelGroup>
 			</f:validateBean>
 			
-			<h:dataTable id="roleBeanPageItems" styleClass="data-table" value="#{roleBean.pageItems}" var="_item">
-				<h:column>
+			<p:dataTable id="roleBeanPageItems" value="#{roleBean.pageItems}" var="_item">
+				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Name"/>
 					</f:facet>
@@ -57,8 +58,8 @@
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemName" value="#{_item.name}"/>
 					</h:link>
-				</h:column>
-			</h:dataTable>
+				</p:column>
+			</p:dataTable>
 			<ui:include src="/resources/scaffold/paginator.xhtml">
 				<ui:param name="paginatorBean" value='#{roleBean}'/>
 			</ui:include>

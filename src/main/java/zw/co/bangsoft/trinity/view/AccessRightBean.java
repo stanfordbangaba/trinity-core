@@ -21,7 +21,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -74,7 +73,7 @@ public class AccessRightBean implements Serializable {
 	@Inject
 	private Conversation conversation;
 
-	@PersistenceContext(unitName = "trinity-core-persistence-unit", type = PersistenceContextType.EXTENDED)
+	@PersistenceContext(unitName = "trinity-core", type = PersistenceContextType.EXTENDED)
 	private EntityManager entityManager;
 
 	@Inject private EntityService entityService;
@@ -120,10 +119,12 @@ public class AccessRightBean implements Serializable {
 			if (this.id == null) {
 				this.entityManager.persist(this.accessRight);
 				entityService.addRoleAccessRights(accessRight);
+			//	entityService.createAuditTrail(accessRight, SystemConstants.AUDIT_ACTION_CREATE);
 				Messages.addGlobalInfo("Access Right created");
 				return "search?faces-redirect=true";
 			} else {
 				this.entityManager.merge(this.accessRight);
+        //entityService.createAuditTrail(accessRight, SystemConstants.AUDIT_ACTION_CREATE);
 				Messages.addGlobalInfo("Access Right updated");
 				return "view?faces-redirect=true&id="
 						+ this.accessRight.getId();

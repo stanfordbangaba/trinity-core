@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:shiro="http://shiro.apache.org/tags"
 	template="/resources/template/pageTemplate.xhtml">
 
@@ -72,8 +73,8 @@
 				</h:panelGroup>
 			</f:validateBean>
 			
-			<h:dataTable id="userBeanPageItems" styleClass="data-table" value="#{userBean.pageItems}" var="_item">
-				<h:column>
+			<p:dataTable id="userBeanPageItems" value="#{userBean.pageItems}" var="_item">
+				<p:column>
 					<f:facet name="header">
 						<h:outputText value="First Name"/>
 					</f:facet>
@@ -81,8 +82,8 @@
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemFirstName" value="#{_item.firstName}"/>
 					</h:link>
-				</h:column>
-				<h:column>
+				</p:column>
+				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Last Name"/>
 					</f:facet>
@@ -90,8 +91,8 @@
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemLastName" value="#{_item.lastName}"/>
 					</h:link>
-				</h:column>
-				<h:column>
+				</p:column>
+				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Username"/>
 					</f:facet>
@@ -99,8 +100,8 @@
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemUsername" value="#{_item.username}"/>
 					</h:link>
-				</h:column>
-			</h:dataTable>
+				</p:column>
+			</p:dataTable>
 			<ui:include src="/resources/scaffold/paginator.xhtml">
 				<ui:param name="paginatorBean" value='#{userBean}'/>
 			</ui:include>

@@ -3,21 +3,32 @@ package zw.co.bangsoft.trinity.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
+import zw.co.bangsoft.trinity.listener.AuditListener;
+
 @Entity
 @Table(name="client")
-public class Client implements Serializable {
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="FROM_CLASS", discriminatorType=DiscriminatorType.STRING)
+@EntityListeners(AuditListener.class)
+public abstract @Data class Client implements Serializable {
 
 	/**
-	 * 
+	 * Abstract model for the client
 	 */
 	protected static final long serialVersionUID = 1L;
 	@Id
@@ -34,72 +45,8 @@ public class Client implements Serializable {
 
 	@Embedded
 	protected Address address;
-	
+
 	@Embedded
 	protected Audit audit;
-	
-	public Long getId() {
-		return this.id;
-	}
 
-	public void setId(final Long id) {
-		this.id = id;
-	}
-
-	public int getVersion() {
-		return this.version;
-	}
-
-	public void setVersion(final int version) {
-		this.version = version;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public Audit getAudit() {
-		return audit;
-	}
-
-	public void setAudit(Audit audit) {
-		this.audit = audit;
-	}
-
-	@Override
-	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (id != null)
-			result += "id: " + id;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Client)) {
-			return false;
-		}
-		Client other = (Client) obj;
-		if (id != null) {
-			if (!id.equals(other.id)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
 }

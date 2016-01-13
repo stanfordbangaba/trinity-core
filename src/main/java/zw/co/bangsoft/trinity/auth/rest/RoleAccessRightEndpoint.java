@@ -28,7 +28,7 @@ import zw.co.bangsoft.trinity.auth.RoleAccessRight;
 @Stateless
 @Path("/roleaccessrights")
 public class RoleAccessRightEndpoint {
-	@PersistenceContext(unitName = "trinity-core-persistence-unit")
+	@PersistenceContext(unitName = "trinity-core")
 	private EntityManager em;
 
 	@POST

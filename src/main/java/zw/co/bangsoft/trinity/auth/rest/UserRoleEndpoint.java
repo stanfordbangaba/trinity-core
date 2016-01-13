@@ -28,7 +28,7 @@ import zw.co.bangsoft.trinity.auth.UserRole;
 @Stateless
 @Path("forge/userroles")
 public class UserRoleEndpoint {
-	@PersistenceContext(unitName = "trinity-core-persistence-unit")
+	@PersistenceContext(unitName = "trinity-core")
 	private EntityManager em;
 
 	@POST

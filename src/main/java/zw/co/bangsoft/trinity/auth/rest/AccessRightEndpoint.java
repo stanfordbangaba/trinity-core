@@ -2,12 +2,9 @@ package zw.co.bangsoft.trinity.auth.rest;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
+import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,21 +17,23 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
+
 import zw.co.bangsoft.trinity.auth.AccessRight;
+import zw.co.bangsoft.trinity.service.AccessRightService;
 
 /**
  *
  */
-@Stateless
+
 @Path("/accessrights")
 public class AccessRightEndpoint {
-	@PersistenceContext(unitName = "trinity-core-persistence-unit")
-	private EntityManager em;
+
+	@Inject private AccessRightService service;
 
 	@POST
 	@Consumes("application/json")
 	public Response create(AccessRight entity) {
-		em.persist(entity);
+	  entity = service.create(entity);
 		return Response.created(
 				UriBuilder.fromResource(AccessRightEndpoint.class)
 						.path(String.valueOf(entity.getId())).build()).build();
@@ -43,11 +42,7 @@ public class AccessRightEndpoint {
 	@DELETE
 	@Path("/{id:[0-9][0-9]*}")
 	public Response deleteById(@PathParam("id") Long id) {
-		AccessRight entity = em.find(AccessRight.class, id);
-		if (entity == null) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-		em.remove(entity);
+		service.deleteById(id);
 		return Response.noContent().build();
 	}
 
@@ -55,14 +50,9 @@ public class AccessRightEndpoint {
 	@Path("/{id:[0-9][0-9]*}")
 	@Produces("application/json")
 	public Response findById(@PathParam("id") Long id) {
-		TypedQuery<AccessRight> findByIdQuery = em
-				.createQuery(
-						"SELECT DISTINCT a FROM AccessRight a WHERE a.id = :entityId ORDER BY a.id",
-						AccessRight.class);
-		findByIdQuery.setParameter("entityId", id);
 		AccessRight entity;
 		try {
-			entity = findByIdQuery.getSingleResult();
+			entity = service.findById(id);
 		} catch (NoResultException nre) {
 			entity = null;
 		}
@@ -77,16 +67,8 @@ public class AccessRightEndpoint {
 	public List<AccessRight> listAll(
 			@QueryParam("start") Integer startPosition,
 			@QueryParam("max") Integer maxResult) {
-		TypedQuery<AccessRight> findAllQuery = em.createQuery(
-				"SELECT DISTINCT a FROM AccessRight a ORDER BY a.id",
-				AccessRight.class);
-		if (startPosition != null) {
-			findAllQuery.setFirstResult(startPosition);
-		}
-		if (maxResult != null) {
-			findAllQuery.setMaxResults(maxResult);
-		}
-		final List<AccessRight> results = findAllQuery.getResultList();
+
+		final List<AccessRight> results = service.listAll(startPosition, maxResult);
 		return results;
 	}
 
@@ -103,11 +85,14 @@ public class AccessRightEndpoint {
 		if (!id.equals(entity.getId())) {
 			return Response.status(Status.CONFLICT).entity(entity).build();
 		}
-		if (em.find(AccessRight.class, id) == null) {
+
+		entity = service.findById(id);
+
+		if (entity == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 		try {
-			entity = em.merge(entity);
+			entity = service.update(entity);
 		} catch (OptimisticLockException e) {
 			return Response.status(Response.Status.CONFLICT)
 					.entity(e.getEntity()).build();

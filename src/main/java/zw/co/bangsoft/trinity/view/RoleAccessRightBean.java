@@ -76,7 +76,7 @@ public class RoleAccessRightBean implements Serializable {
 	@Inject
 	private Conversation conversation;
 
-	@PersistenceContext(unitName = "trinity-core-persistence-unit", type = PersistenceContextType.EXTENDED)
+	@PersistenceContext(unitName = "trinity-core", type = PersistenceContextType.EXTENDED)
 	private EntityManager entityManager;
 
 	public String create() {

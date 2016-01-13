@@ -1,6 +1,8 @@
 package zw.co.bangsoft.trinity.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+
 import java.io.Serializable;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,12 +11,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Version;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.Tolerate;
+import zw.co.bangsoft.trinity.listener.AuditListener;
+
 @Entity
 @Table(name="account")
-public class Account implements Serializable {
+@EntityListeners(AuditListener.class)
+public @Data @Builder class Account implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -25,52 +33,20 @@ public class Account implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	public Long getId() {
-		return this.id;
-	}
+	@Column(length = 30)
+	private String accountNumber;
 
-	public void setId(final Long id) {
-		this.id = id;
-	}
+	@Column(length = 150)
+  private String accountName;
 
-	public int getVersion() {
-		return this.version;
-	}
+	@Column(length = 30)
+  private String ownerId;
 
-	public void setVersion(final int version) {
-		this.version = version;
-	}
+	@Column(length = 30)
+  private String ownerType;
 
-	@Override
-	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (id != null)
-			result += "id: " + id;
-		return result;
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Account)) {
-			return false;
-		}
-		Account other = (Account) obj;
-		if (id != null) {
-			if (!id.equals(other.id)) {
-				return false;
-			}
-		}
-		return true;
-	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+	@Tolerate public Account() {}
+
 }

@@ -1,6 +1,8 @@
 package zw.co.bangsoft.trinity.auth;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,16 +18,25 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import zw.co.bangsoft.trinity.annotation.Email;
+import zw.co.bangsoft.trinity.iface.Auditable;
+import zw.co.bangsoft.trinity.listener.AuditListener;
 import zw.co.bangsoft.trinity.model.Audit;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.ToString;
+import lombok.experimental.Tolerate;
+
 @Entity
 @Table(name = "user")
+@EntityListeners(value = AuditListener.class)
 @XmlRootElement
-public class User implements Serializable {
+@ToString(of={"username"})
+public @Data @Builder class User implements Serializable, Auditable {
 
 	/**
-	 *
+	 * Model for system users
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -84,161 +95,14 @@ public class User implements Serializable {
 	@OneToMany(targetEntity = UserRole.class, mappedBy = "user")
 	private List<UserRole> userRoles;
 
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(final Long id) {
-		this.id = id;
-	}
-
-	public int getVersion() {
-		return this.version;
-	}
-
-	public void setVersion(final int version) {
-		this.version = version;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public boolean getShouldChangePwd() {
-		return shouldChangePwd;
-	}
-
-	public void setShouldChangePwd(boolean shouldChangePwd) {
-		this.shouldChangePwd = shouldChangePwd;
-	}
-
-	public boolean getAccountExpired() {
-		return accountExpired;
-	}
-
-	public void setAccountExpired(boolean accountExpired) {
-		this.accountExpired = accountExpired;
-	}
-
-	public boolean getAccountLocked() {
-		return accountLocked;
-	}
-
-	public void setAccountLocked(boolean accountLocked) {
-		this.accountLocked = accountLocked;
-	}
-
-	public boolean getPasswordExpired() {
-		return passwordExpired;
-	}
-
-	public void setPasswordExpired(boolean passwordExpired) {
-		this.passwordExpired = passwordExpired;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Audit getAudit() {
-		return audit;
-	}
-
-	public void setAudit(Audit audit) {
-		this.audit = audit;
-	}
-
-	public List<UserRole> getUserRoles() {
-		return userRoles;
-	}
-
-	public void setUserRoles(List<UserRole> userRoles) {
-		this.userRoles = userRoles;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	@Override
-	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (username != null && !username.trim().isEmpty())
-			result += "username: " + username;
-		if (enabled)
-			result += ", enabled: " + enabled;
-		if (password != null && !password.trim().isEmpty())
-			result += ", password: " + password;
-		return result;
+	public String getAuditTrail() {
+	  return "firstName=" + firstName + ", lastName=" + lastName + ", username=" + username +
+	      ", email=" + email + ", shouldChangePwd=" + shouldChangePwd + ", enabled=" + enabled +
+	        ", accountExpired=" + accountExpired + ", accountLocked=" + accountLocked + ", passwordExpired=" + passwordExpired + ", status" + status;
+
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof User)) {
-			return false;
-		}
-		User other = (User) obj;
-		if (id != null) {
-			if (!id.equals(other.id)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+	@Tolerate public User() {}
 
 }

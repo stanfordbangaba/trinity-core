@@ -1,5 +1,6 @@
 package zw.co.bangsoft.trinity.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -8,19 +9,22 @@ import javax.ejb.Asynchronous;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
-import zw.co.bangsoft.trinity.annotation.LoggedIn;
+import org.apache.shiro.SecurityUtils;
+
 import zw.co.bangsoft.trinity.annotation.UserLoggedIn;
 import zw.co.bangsoft.trinity.auth.AccessRight;
 import zw.co.bangsoft.trinity.auth.Role;
 import zw.co.bangsoft.trinity.auth.RoleAccessRight;
 import zw.co.bangsoft.trinity.auth.User;
+import zw.co.bangsoft.trinity.iface.Auditable;
+import zw.co.bangsoft.trinity.model.AuditTrail;
+import lombok.val;
 
 /**
  * Session Bean implementation class EntityService
@@ -29,7 +33,7 @@ import zw.co.bangsoft.trinity.auth.User;
 @LocalBean
 public class EntityService {
 
-    @PersistenceContext(unitName = "trinity-core-persistence-unit")
+    @PersistenceContext(unitName = "trinity-core")
     private EntityManager em;
 
     /**
@@ -50,11 +54,11 @@ public class EntityService {
       try {
         this.getAllAccessRights().stream()
           .map(ar -> {
-            RoleAccessRight rar = new RoleAccessRight();
-            rar.setAccessRight(ar);
-            rar.setRole(role);
-            rar.setGranted(false);
-            return rar;
+            return RoleAccessRight.builder()
+                .accessRight(ar)
+                .role(role)
+                .granted(false)
+                .build();
           }).forEach(rar -> em.persist(rar));
 
         return new AsyncResult<String>("Future result >> Access Rights added successfully to role");
@@ -70,15 +74,14 @@ public class EntityService {
           .getResultList();
     }
 
-    @Asynchronous
     public void addRoleAccessRights(AccessRight accessRight) {
       this.getAllRoles().stream()
         .map(role -> {
-          RoleAccessRight rar = new RoleAccessRight();
-          rar.setAccessRight(accessRight);
-          rar.setRole(role);
-          rar.setGranted(false);
-          return rar;
+          return RoleAccessRight.builder()
+              .accessRight(accessRight)
+              .role(role)
+              .granted(false)
+              .build();
         }).forEach(rar -> em.persist(rar));
     }
 
@@ -100,4 +103,33 @@ public class EntityService {
       }
       return null;
     }
+
+    public void createAuditTrail(Auditable entity, String action) {
+      try {
+        System.out.println("Audit listener: postPersist/postUpdate");
+        val auditTrail = AuditTrail.builder()
+            .dateCreated(new Date())
+            .entityClass(entity.getClass().getName())
+            .entityId(entity.getId())
+            .action(action)
+            .trail(entity.getAuditTrail())
+            .username(SecurityUtils.getSubject().getPrincipal().toString())
+            .build();
+
+        this.createAuditTrail(auditTrail);
+
+      } catch(Exception e) {
+        e.printStackTrace();
+      }
+    }
+
+    public void createAuditTrail(AuditTrail auditTrail) {
+      try {
+        em.persist(auditTrail);
+        System.out.println("Persisted audit trail event!");
+      } catch(Exception e) {
+        e.printStackTrace();
+      }
+    }
+
 }

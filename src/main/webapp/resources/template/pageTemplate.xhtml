@@ -43,39 +43,50 @@
 		<shiro:authenticated>
 			<div id="navigation">
 				<h:link id="homeLink" outcome="/index.xhtml">
-					<img src='#{resource["forge-logo.png"]}' alt="Forge... get hammered" border="0" />
+					<img src='#{resource["bank-logo.jpg"]}' alt="Forge... get hammered" border="0" />
 				</h:link>
-					<ul>
-						<shiro:hasPermission name="accessRight:search">
-							<li>
-								<h:link outcome="/accessRight/search" value="Access Right" />
-							</li>
-						</shiro:hasPermission>
-						
-						<shiro:hasPermission name="role:search">
-							<li>
-								<h:link outcome="/role/search" value="Role"/>
-							</li>
-						</shiro:hasPermission>
-						
-						<shiro:hasPermission name="roleAccessRight:search">
-							<li>
-								<h:link outcome="/roleAccessRight/search" value="Role Access Right"/>
-							</li>
-						</shiro:hasPermission>
-						
-						<shiro:hasPermission name="user:search">
-							<li>
-								<h:link outcome="/user/search" value="User"/>
-							</li>
-						</shiro:hasPermission>
-						
-						<shiro:hasPermission name="userRole:search">
-							<li>
-								<h:link outcome="/userRole/search" value="User Role"/>
-							</li>
-						</shiro:hasPermission>
-					</ul>
+				<hr/>
+				<h3>MENU</h3>
+				<h:form>
+					<p:menu toggleable="true">
+						<p:submenu label="Security" expanded="true">
+							<shiro:hasPermission name="accessRight:search">
+								<p:menuitem>
+									<h:link outcome="/accessRight/search" value="Access Right" />
+								</p:menuitem>
+							</shiro:hasPermission>
+							
+							<shiro:hasPermission name="role:search">
+								<p:menuitem>
+									<h:link outcome="/role/search" value="Role"/>
+								</p:menuitem>
+							</shiro:hasPermission>
+							
+							<shiro:hasPermission name="roleAccessRight:search">
+								<p:menuitem>
+									<h:link outcome="/roleAccessRight/search" value="Role Access Right"/>
+								</p:menuitem>
+							</shiro:hasPermission>
+							
+							<shiro:hasPermission name="user:search">
+								<p:menuitem>
+									<h:link outcome="/user/search" value="User"/>
+								</p:menuitem>
+							</shiro:hasPermission>
+							
+							<shiro:hasPermission name="userRole:search">
+								<p:menuitem>
+									<h:link outcome="/userRole/search" value="User Role"/>
+								</p:menuitem>
+							</shiro:hasPermission>
+						</p:submenu>
+						<p:submenu label="Settings" expanded="false">
+							<p:menuitem>
+								<h:link outcome="#" value="Global Settings"/>
+							</p:menuitem>
+						</p:submenu>
+					</p:menu>
+				</h:form>
 			</div>
 			<div id="content">			
 				<h1>

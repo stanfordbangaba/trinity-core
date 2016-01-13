@@ -62,44 +62,44 @@
 				</h:panelGroup>
 			</f:validateBean>
 			
-			<h:dataTable id="accessRightBeanPageItems" styleClass="data-table" value="#{accessRightBean.pageItems}" var="_item">
-				<h:column>
+			<p:dataTable id="accessRightBeanPageItems" value="#{accessRightBean.pageItems}" var="_item">
+				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Url"/>
 					</f:facet>
-					<h:link outcome="/accessRight/view">
+					<p:link outcome="/accessRight/view">
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemUrl" value="#{_item.url}"/>
-					</h:link>
-				</h:column>
-				<h:column>
+					</p:link>
+				</p:column>
+				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Http Method"/>
 					</f:facet>
-					<h:link outcome="/accessRight/view">
+					<p:link outcome="/accessRight/view">
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemHttpMethod" value="#{_item.httpMethod}"/>
-					</h:link>
-				</h:column>
-				<h:column>
+					</p:link>
+				</p:column>
+				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Description"/>
 					</f:facet>
-					<h:link outcome="/accessRight/view">
+					<p:link outcome="/accessRight/view">
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemDescription" value="#{_item.description}"/>
-					</h:link>
-				</h:column>
-				<h:column>
+					</p:link>
+				</p:column>
+				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Enabled"/>
 					</f:facet>
-					<h:link outcome="/accessRight/view">
+					<p:link outcome="/accessRight/view">
 						<f:param name="id" value="#{_item.id}"/>
 						<h:outputText id="itemEnabled" value="#{_item.enabled}"/>
-					</h:link>
-				</h:column>
-			</h:dataTable>
+					</p:link>
+				</p:column>
+			</p:dataTable>
 			<ui:include src="/resources/scaffold/paginator.xhtml">
 				<ui:param name="paginatorBean" value='#{accessRightBean}'/>
 			</ui:include>
