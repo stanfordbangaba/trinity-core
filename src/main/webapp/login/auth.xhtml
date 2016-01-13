@@ -9,8 +9,9 @@
 <h:head>
 	<title>Login</title>
 	<link rel="icon" href='#{resource["favicon.ico"]}' />
-	<link rel="stylesheet" href='#{resource["bootstrap.css"]}' />
 	<link rel="stylesheet" href='#{resource["forge-style.css"]}' />
+	<link rel="stylesheet" href='#{resource["bootstrap.css"]}' />
+	<h:outputScript name="login.js" library="js" target="head" />
 </h:head>
 
 <h:body>
@@ -23,7 +24,7 @@
 	</div>
 	<div class="container forgecontainer">
 		<div id="navigation">
-			<img src='#{resource["bank-logo.jpg"]}' alt="Trinity... all-in-one" border="0" />
+			<img src='#{resource["forge-logo.png"]}' alt="Trinity... all-in-one" border="0" />
 			<hr/>
 		</div>
 		<div id="content">
@@ -54,23 +55,11 @@
 			</h:form>
 		</div>
 		<footer>
-			<div id="footer-wrapper" style="margin-top: 130px;">
+			<div id="footer-wrapper" style="margin-top: 140px;">
 				<hr/>
 	    		<p style="color: olive;">Powered by <a href="#">Bangsoft</a></p>
 	    	</div>
 		</footer>
 	</div>
-	<script type="text/javascript">
-	    function handleLoginRequest(xhr, status, args) {
-	        if(args.validationFailed || !args.loggedIn) {
-	            PF('dlg').jq.effect("shake", {times:5}, 100);
-	        }
-	        else {
-	            PF('dlg').hide();
-	            $('#loginLink').fadeOut();
-	            window.location.href = '/trinity-core/index.xhtml';
-	        }
-	    }
-</script>
 </h:body>
 </html>
