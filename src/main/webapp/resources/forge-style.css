@@ -710,8 +710,13 @@ h4.page-header {
    width:301px;
    z-index:9999;
 }
-
 .ui-menu {
 	margin-left: 15px;
 }
+.ui-clock {
+	position: absolute;
+	top: 50px;
+	right: 20px;
+}
+
 

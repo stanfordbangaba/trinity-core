@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
+@XmlRootElement
 @EqualsAndHashCode(callSuper=false)
 public @Data class IndividualClient extends Client implements Serializable {
 
@@ -25,6 +27,12 @@ public @Data class IndividualClient extends Client implements Serializable {
   private String nationalId;
   @Column(length=30)
   private String dateOfBirth;
+
+  @Column(length=10)
+  private String gender;
+
+  @Column(length=15)
+  private String title;
 
   public String getType() {
     return IndividualClient.class.getSimpleName();

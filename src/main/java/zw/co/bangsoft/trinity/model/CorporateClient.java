@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
+@XmlRootElement
 @EqualsAndHashCode(callSuper=false)
 public @Data class CorporateClient extends Client implements Serializable {
 

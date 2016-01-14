@@ -1,25 +1,20 @@
 package zw.co.bangsoft.trinity.listener;
 
-import java.text.Annotation;
 import java.util.Date;
 
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.transaction.Transactional;
 
 import org.apache.shiro.SecurityUtils;
 
-import zw.co.bangsoft.trinity.annotation.AuditEvent;
 import zw.co.bangsoft.trinity.iface.Auditable;
 import zw.co.bangsoft.trinity.model.Audit;
 import zw.co.bangsoft.trinity.model.AuditTrail;
-import zw.co.bangsoft.trinity.service.EntityService;
 import zw.co.bangsoft.trinity.util.SystemConstants;
 
 public class AuditListener {
